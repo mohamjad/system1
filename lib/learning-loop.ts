@@ -26,7 +26,17 @@ export function generateLearningSuggestions(
   // Check for weak signals (threshold updates)
   if (incident.signalsWereTooWeak.length > 0) {
     incident.signalsWereTooWeak.forEach(signalName => {
-      const existingSignal = system.signals.find(s => s.name.toLowerCase().includes(signalName.toLowerCase()));
+      // Try multiple matching strategies
+      const existingSignal = system.signals.find(s => {
+        const signalNameLower = s.name.toLowerCase();
+        const incidentNameLower = signalName.toLowerCase();
+        // Match by exact name, or by ID, or by partial match
+        return signalNameLower === incidentNameLower ||
+               s.id === signalName ||
+               signalNameLower.includes(incidentNameLower) ||
+               incidentNameLower.includes(signalNameLower);
+      });
+      
       if (existingSignal) {
         suggestions.push({
           id: `suggestion-${Date.now()}-${Math.random()}`,
@@ -35,6 +45,15 @@ export function generateLearningSuggestions(
           signalId: existingSignal.id,
           reason: `Incident "${incident.symptom}" would have been caught earlier with a lower threshold`,
           newThreshold: suggestNewThreshold(existingSignal)
+        });
+      } else {
+        // If signal not found but was mentioned, suggest adding it
+        suggestions.push({
+          id: `suggestion-${Date.now()}-${Math.random()}`,
+          type: 'new_signal',
+          description: `Add "${signalName}" signal to catch this earlier`,
+          reason: `Incident "${incident.symptom}" would have been caught earlier with this signal`,
+          newSignal: generateSignalSuggestion(signalName, incident)
         });
       }
     });
