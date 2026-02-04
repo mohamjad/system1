@@ -826,6 +826,9 @@ export function SystemsDashboard({ systems }: SystemsDashboardProps) {
                 new_stress_test: 'New Stress Test'
               };
               
+              const suggestionType: LearningSuggestion['type'] = item.suggestion.type;
+              const typeLabel = typeLabels[suggestionType];
+              
               return (
                 <Link
                   key={`${item.systemId}-${item.incidentId}-${idx}`}
@@ -837,7 +840,7 @@ export function SystemsDashboard({ systems }: SystemsDashboardProps) {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="px-2 py-1 text-xs border border-subtle rounded">
-                          {typeLabels[item.suggestion.type]}
+                          {typeLabel}
                         </span>
                         <span className="text-sm text-muted-foreground">{item.systemName}</span>
                       </div>

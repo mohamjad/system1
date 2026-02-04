@@ -25,7 +25,7 @@ export function generateHealthHistory(system: System, days: number = 90): Array<
   // Generate data points going forward from (days ago) to today
   // Use milliseconds for precise date calculation
   const today = new Date();
-  today.setHours(12, 0, 0, 0, 0);
+  today.setHours(12, 0, 0, 0);
   const todayMs = today.getTime();
   
   const daysInMs = days * 24 * 60 * 60 * 1000;
