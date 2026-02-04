@@ -36,7 +36,7 @@ export function SystemCard({ system }: SystemCardProps) {
             <div className={`text-2xl font-bold ${riskColor}`}>
               {Math.round(system.healthScore)}
             </div>
-            <div className="text-xs text-muted-foreground">Health</div>
+            <div className="text-xs text-muted-foreground">System Health</div>
           </div>
         </div>
         

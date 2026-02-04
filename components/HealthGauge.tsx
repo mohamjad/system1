@@ -42,7 +42,7 @@ export function HealthGauge({ score, size = 120 }: HealthGaugeProps) {
           <div className="text-3xl font-bold" style={{ color }}>
             {Math.round(score)}
           </div>
-          <div className="text-xs text-muted-foreground">Health</div>
+          <div className="text-xs text-muted-foreground">System Health</div>
         </div>
       </div>
     </div>

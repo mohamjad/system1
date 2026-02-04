@@ -48,7 +48,7 @@ export default function Home() {
                 2
               </div>
               <div>
-                <div className="font-medium mb-1">Get Health Score</div>
+                <div className="font-medium mb-1">Get System Health</div>
                 <div className="text-muted-foreground text-xs">
                   The framework evaluates your system and gives you a health score with explanations
                 </div>
@@ -137,6 +137,40 @@ export default function Home() {
                 This framework helps you define <strong>leading indicators</strong>—signals that fire <em>before</em> things break. 
                 When an incident happens, it learns and suggests improvements. Over time, you catch problems earlier and earlier.
               </p>
+            </div>
+
+            <div className="mb-12 p-6 border border-subtle rounded-lg">
+              <h2 className="font-semibold mb-4">Use This When</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="flex gap-3">
+                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                  <div>
+                    <div className="font-medium mb-1">Things feel off but nothing is alerting</div>
+                    <div className="text-muted-foreground">Your gut says something's wrong, but dashboards look fine</div>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                  <div>
+                    <div className="font-medium mb-1">Metrics look fine but outcomes aren't</div>
+                    <div className="text-muted-foreground">Success rates are good, but business results are declining</div>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                  <div>
+                    <div className="font-medium mb-1">Failures keep repeating in new ways</div>
+                    <div className="text-muted-foreground">You fix one issue, but similar problems keep appearing</div>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                  <div>
+                    <div className="font-medium mb-1">You want to know what you're blind to</div>
+                    <div className="text-muted-foreground">Understand which failure modes have weak or no detection</div>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-start max-w-2xl mx-auto">

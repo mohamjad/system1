@@ -4,6 +4,8 @@ import { System } from '@/types';
 import { HealthGauge } from '@/components/HealthGauge';
 import { evaluateSystem } from '@/lib/scoring';
 import { InfoTooltip } from '@/components/InfoTooltip';
+import { ConfidenceDecomposition } from '@/components/ConfidenceDecomposition';
+import { DecisionRecommendations } from '@/components/DecisionRecommendations';
 
 interface OverviewTabProps {
   system: System;
@@ -43,7 +45,7 @@ export function OverviewTab({ system, onUpdate }: OverviewTabProps) {
           <div className="flex items-center justify-between mb-4">
             <div className="text-sm text-muted-foreground">
               <InfoTooltip content="Overall system health (0-100). Higher is better. Calculated by subtracting risk from 100.">
-                Health Score
+                System Health
               </InfoTooltip>
             </div>
           </div>
@@ -55,7 +57,7 @@ export function OverviewTab({ system, onUpdate }: OverviewTabProps) {
         <div className="border border-subtle rounded-lg p-6">
           <div className="text-sm text-muted-foreground mb-2">
             <InfoTooltip content="Current risk level based on triggered signals and active failure modes.">
-              Risk Score
+              Failure Risk
             </InfoTooltip>
           </div>
           <div className={`text-4xl font-bold mb-2 ${riskColor}`}>
@@ -69,7 +71,7 @@ export function OverviewTab({ system, onUpdate }: OverviewTabProps) {
         <div className="border border-subtle rounded-lg p-6">
           <div className="text-sm text-muted-foreground mb-2">
             <InfoTooltip content="How confident we are in this evaluation. Based on signal coverage, data recency, and failure mode coverage.">
-              Confidence
+              Evaluation Confidence
             </InfoTooltip>
           </div>
           <div className="text-4xl font-bold mb-2">
@@ -109,30 +111,9 @@ export function OverviewTab({ system, onUpdate }: OverviewTabProps) {
         </div>
       </div>
 
-      <div className="border border-subtle rounded-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">Recommended Interventions</h2>
-        <div className="space-y-2 text-sm">
-          {system.riskLevel === 'high' && (
-            <div className="p-3 border border-subtle rounded">
-              <strong>Immediate:</strong> Review triggered signals and check for active incidents
-            </div>
-          )}
-          {system.confidenceScore < 70 && (
-            <div className="p-3 border border-subtle rounded">
-              <strong>Coverage:</strong> Add more signals to improve detection coverage
-            </div>
-          )}
-          {system.stressTests.filter(t => !t.passed).length > 0 && (
-            <div className="p-3 border border-subtle rounded">
-              <strong>Testing:</strong> Review failed stress tests and update signal thresholds
-            </div>
-          )}
-          {system.incidents.length > 0 && (
-            <div className="p-3 border border-subtle rounded">
-              <strong>Learning:</strong> Review incidents in Learning Loop tab to improve early detection
-            </div>
-          )}
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ConfidenceDecomposition system={system} />
+        <DecisionRecommendations system={system} />
       </div>
     </div>
   );

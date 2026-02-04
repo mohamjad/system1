@@ -10,8 +10,11 @@ import { EvaluationTab } from '@/components/tabs/EvaluationTab';
 import { StressTestsTab } from '@/components/tabs/StressTestsTab';
 import { IncidentsTab } from '@/components/tabs/IncidentsTab';
 import { LearningLoopTab } from '@/components/tabs/LearningLoopTab';
+import { EarlyDetectionSimulatorTab } from '@/components/tabs/EarlyDetectionSimulatorTab';
+import { SystemDriftTab } from '@/components/tabs/SystemDriftTab';
+import { CoverageHeatmapTab } from '@/components/tabs/CoverageHeatmapTab';
 
-type Tab = 'overview' | 'signals' | 'evaluation' | 'stress-tests' | 'incidents' | 'learning-loop';
+type Tab = 'overview' | 'signals' | 'evaluation' | 'coverage' | 'stress-tests' | 'incidents' | 'early-detection' | 'drift' | 'learning-loop';
 
 export default function SystemDetailPage() {
   const params = useParams();
@@ -48,6 +51,8 @@ export default function SystemDetailPage() {
     { id: 'evaluation', label: 'Evaluation' },
     { id: 'stress-tests', label: 'Stress Tests' },
     { id: 'incidents', label: 'Incidents' },
+    { id: 'early-detection', label: 'Early Detection Simulator' },
+    { id: 'drift', label: 'System Drift' },
     { id: 'learning-loop', label: 'Learning Loop' }
   ];
 
@@ -105,11 +110,20 @@ export default function SystemDetailPage() {
         {activeTab === 'evaluation' && (
           <EvaluationTab system={system} />
         )}
+        {activeTab === 'coverage' && (
+          <CoverageHeatmapTab system={system} />
+        )}
         {activeTab === 'stress-tests' && (
           <StressTestsTab system={system} onUpdate={handleSystemUpdate} />
         )}
         {activeTab === 'incidents' && (
           <IncidentsTab system={system} onUpdate={handleSystemUpdate} />
+        )}
+        {activeTab === 'early-detection' && (
+          <EarlyDetectionSimulatorTab system={system} />
+        )}
+        {activeTab === 'drift' && (
+          <SystemDriftTab system={system} />
         )}
         {activeTab === 'learning-loop' && (
           <LearningLoopTab system={system} onUpdate={handleSystemUpdate} />

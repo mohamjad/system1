@@ -2,6 +2,7 @@
 
 import { System } from '@/types';
 import { evaluateSystem } from '@/lib/scoring';
+import { CoverageHeatmapTab } from '@/components/tabs/CoverageHeatmapTab';
 
 interface EvaluationTabProps {
   system: System;
@@ -77,7 +78,7 @@ export function EvaluationTab({ system }: EvaluationTabProps) {
                     <span>{fm.detectability}/5</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Risk Score: </span>
+                    <span className="text-muted-foreground">Failure Risk: </span>
                     <span className="font-medium">{Math.round(riskScore)}</span>
                   </div>
                 </div>

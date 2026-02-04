@@ -99,3 +99,39 @@ export interface EvaluationResult {
     riskScore: number;
   }>;
 }
+
+export interface HistoricalSignalValue {
+  signalId: string;
+  timestamp: string; // ISO timestamp
+  value: number;
+  status: SignalStatus;
+}
+
+export interface TimelinePoint {
+  timeLabel: string; // e.g., "T-7 days", "T-3 days", "Failure"
+  timestamp: string; // ISO timestamp
+  signalValues: Array<{
+    signalId: string;
+    value: number;
+    status: SignalStatus;
+    wouldHaveTriggered: boolean;
+  }>;
+  earliestInterventionPossible: boolean;
+}
+
+export interface CoverageStrength {
+  failureModeId: string;
+  signalId: string;
+  strength: 'strong' | 'partial' | 'weak' | 'none';
+  reason: string;
+}
+
+export interface DecisionRecommendation {
+  id: string;
+  priority: 'high' | 'medium' | 'low';
+  action: string;
+  reason: string;
+  relatedSignalId?: string;
+  relatedFailureModeId?: string;
+  relatedIncidentId?: string;
+}
