@@ -9,6 +9,7 @@ import { reevaluateSystem } from '@/lib/scoring';
 
 export default function Home() {
   const [systems, setSystems] = useState<System[]>([]);
+  const [showFullExplanation, setShowFullExplanation] = useState(false);
 
   useEffect(() => {
     const loaded = loadSystems();
@@ -122,94 +123,234 @@ export default function Home() {
             <h1 className="text-5xl font-bold mb-6">
               Evaluate whether systems are actually healthy.
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              Leading indicators plus failure learning. Not dashboards that tell you after it's too late.
-            </p>
             
-            <div className="mb-12 p-6 border border-subtle rounded-lg bg-hover">
-              <h2 className="font-semibold mb-3">The Problem</h2>
-              <p className="text-sm text-muted-foreground mb-4">
-                Most monitoring tools show you what happened yesterday. By the time you see a spike in errors or a drop in revenue, 
-                the damage is done. You're reacting, not preventing.
-              </p>
-              <h2 className="font-semibold mb-3 mt-6">The Solution</h2>
-              <p className="text-sm text-muted-foreground">
-                This framework helps you define <strong>leading indicators</strong>—signals that fire <em>before</em> things break. 
-                When an incident happens, it learns and suggests improvements. Over time, you catch problems earlier and earlier.
-              </p>
-            </div>
+            {!showFullExplanation ? (
+              <>
+                {/* Short Preview */}
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                  Most monitoring shows you what broke yesterday. This framework shows you what's breaking tomorrow—before it happens.
+                </p>
 
-            <div className="mb-12 p-6 border border-subtle rounded-lg">
-              <h2 className="font-semibold mb-4">Use This When</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div className="flex gap-3">
-                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
-                  <div>
-                    <div className="font-medium mb-1">Things feel off but nothing is alerting</div>
-                    <div className="text-muted-foreground">Your gut says something's wrong, but dashboards look fine</div>
+                <div className="mb-12 p-6 border border-subtle rounded-lg">
+                  <h2 className="font-semibold mb-3">Use This When</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div className="flex gap-3">
+                      <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                      <div>
+                        <div className="font-medium mb-1">Things feel off but nothing is alerting</div>
+                        <div className="text-muted-foreground">Your gut says something's wrong, but dashboards look fine</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                      <div>
+                        <div className="font-medium mb-1">Metrics look fine but outcomes aren't</div>
+                        <div className="text-muted-foreground">Success rates are good, but business results are declining</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                      <div>
+                        <div className="font-medium mb-1">Failures keep repeating in new ways</div>
+                        <div className="text-muted-foreground">You fix one issue, but similar problems keep appearing</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                      <div>
+                        <div className="font-medium mb-1">You want to know what you're blind to</div>
+                        <div className="text-muted-foreground">Understand which failure modes have weak or no detection</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
-                  <div>
-                    <div className="font-medium mb-1">Metrics look fine but outcomes aren't</div>
-                    <div className="text-muted-foreground">Success rates are good, but business results are declining</div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-start max-w-2xl mx-auto mb-12">
+                  <div className="flex-1 min-w-0">
+                    <Link
+                      href="/systems"
+                      className="block px-8 py-4 text-center rounded-lg transition-colors text-lg font-semibold border-2"
+                      style={{
+                        backgroundColor: 'var(--foreground)',
+                        color: 'var(--background)',
+                        borderColor: 'var(--foreground)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.opacity = '0.9';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.opacity = '1';
+                      }}
+                    >
+                      Preview Demo
+                    </Link>
+                    <p className="text-xs text-muted-foreground mt-3 text-center">
+                      Explore 3 pre-configured systems with signals, failure modes, incidents, and the learning loop in action
+                    </p>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <button
+                      onClick={() => setShowFullExplanation(true)}
+                      className="block w-full px-8 py-4 border-2 border-subtle font-semibold rounded-lg hover-subtle transition-colors text-center text-lg"
+                    >
+                      Read Explanation
+                    </button>
+                    <p className="text-xs text-muted-foreground mt-3 text-center">
+                      Understand how the framework works and why it's different from traditional monitoring
+                    </p>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
-                  <div>
-                    <div className="font-medium mb-1">Failures keep repeating in new ways</div>
-                    <div className="text-muted-foreground">You fix one issue, but similar problems keep appearing</div>
+              </>
+            ) : (
+              <>
+                {/* Full Explanation */}
+                <div className="mb-8">
+                  <button
+                    onClick={() => setShowFullExplanation(false)}
+                    className="text-sm text-muted-foreground hover:text-foreground mb-4"
+                  >
+                    ← Back to preview
+                  </button>
+                  
+                  <div className="space-y-6">
+                    <div className="p-6 border border-subtle rounded-lg bg-hover">
+                      <h2 className="font-semibold mb-3">The Problem</h2>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Most monitoring tools show you what happened yesterday. By the time you see a spike in errors or a drop in revenue, 
+                        the damage is done. You're reacting, not preventing.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Traditional dashboards are lagging indicators. They tell you something broke after it's already broken. 
+                        By then, customers are affected, revenue is lost, and trust is damaged.
+                      </p>
+                    </div>
+
+                    <div className="p-6 border border-subtle rounded-lg">
+                      <h2 className="font-semibold mb-3">The Solution</h2>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        This framework helps you define <strong>leading indicators</strong>—signals that fire <em>before</em> things break. 
+                        Instead of monitoring what happened, you monitor what's about to happen.
+                      </p>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        When an incident occurs, the framework doesn't just log it. It analyzes what would have caught it earlier and 
+                        suggests improvements. Over time, you catch problems earlier and earlier.
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        This is evaluation-environment thinking: not just measuring outcomes, but reasoning about when and why systems fail, 
+                        and how early that could have been known.
+                      </p>
+                    </div>
+
+                    <div className="p-6 border border-subtle rounded-lg">
+                      <h2 className="font-semibold mb-3">Key Features</h2>
+                      <div className="space-y-4 text-sm">
+                        <div>
+                          <div className="font-medium mb-1">Early Detection Simulator</div>
+                          <div className="text-muted-foreground">
+                            See when signals should have fired before an incident. Shows the earliest moment intervention was possible, 
+                            not when alerts fired.
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-medium mb-1">Coverage Heatmap</div>
+                          <div className="text-muted-foreground">
+                            Visualize which failure modes are covered by which signals. See what you're blind to right now.
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-medium mb-1">Failure Learning Loop</div>
+                          <div className="text-muted-foreground">
+                            When something breaks, the framework learns. It suggests new signals, threshold adjustments, and stress tests 
+                            that would have caught it earlier.
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-medium mb-1">System Drift View</div>
+                          <div className="text-muted-foreground">
+                            See how health changes over time. No spikes, just gradual drift. Systems that look fine until they don't.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-6 border border-subtle rounded-lg">
+                      <h2 className="font-semibold mb-3">How It's Different</h2>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                          <div>
+                            <strong>Leading indicators, not lagging metrics:</strong> Signals fire before failures, not after
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                          <div>
+                            <strong>Counterfactual reasoning:</strong> Shows when intervention was possible, not just when alerts fired
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                          <div>
+                            <strong>Coverage thinking:</strong> Focuses on what you're blind to, not just what you're monitoring
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
+                          <div>
+                            <strong>Self-improving:</strong> Learns from incidents to improve detection over time
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <div className="flex-shrink-0 w-1 h-1 rounded-full bg-foreground mt-2"></div>
-                  <div>
-                    <div className="font-medium mb-1">You want to know what you're blind to</div>
-                    <div className="text-muted-foreground">Understand which failure modes have weak or no detection</div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-start max-w-2xl mx-auto">
+                  <div className="flex-1 min-w-0">
+                    <Link
+                      href="/systems"
+                      className="block px-8 py-4 text-center rounded-lg transition-colors text-lg font-semibold border-2"
+                      style={{
+                        backgroundColor: 'var(--foreground)',
+                        color: 'var(--background)',
+                        borderColor: 'var(--foreground)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.opacity = '0.9';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.opacity = '1';
+                      }}
+                    >
+                      Preview Demo
+                    </Link>
+                    <p className="text-xs text-muted-foreground mt-3 text-center">
+                      Explore 3 pre-configured systems
+                    </p>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <Link
+                      href="https://github.com/mohamjad/system1"
+                      target="_blank"
+                      className="block w-full px-8 py-4 border-2 border-subtle font-semibold rounded-lg hover-subtle transition-colors text-center text-lg"
+                    >
+                      View Documentation
+                    </Link>
+                    <p className="text-xs text-muted-foreground mt-3 text-center">
+                      Read full technical documentation
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-start max-w-2xl mx-auto">
-              <div className="flex-1 min-w-0">
-                <Link
-                  href="/systems"
-                  className="block px-8 py-4 bg-foreground text-background font-semibold rounded-lg hover:opacity-90 transition-opacity text-center text-lg"
-                  style={{
-                    backgroundColor: 'var(--foreground)',
-                    color: 'var(--background)',
-                    border: '2px solid var(--foreground)'
-                  }}
-                >
-                  Open Demo
-                </Link>
-                <p className="text-xs text-muted-foreground mt-3 text-center">
-                  Explore 3 pre-configured systems with signals, failure modes, incidents, and the learning loop in action
-                </p>
-              </div>
-              <div className="flex-1 min-w-0">
-                <Link
-                  href="/systems/new"
-                  className="block px-8 py-4 border-2 border-subtle font-medium rounded-lg hover-subtle transition-colors text-center text-lg"
-                >
-                  Create System
-                </Link>
-                <p className="text-xs text-muted-foreground mt-3 text-center">
-                  Start monitoring your own system by defining signals and failure modes
-                </p>
-              </div>
-            </div>
+              </>
+            )}
 
             <div className="mt-12 grid grid-cols-3 gap-6">
               <div className="p-4 border border-subtle rounded-lg">
-                <div className="text-2xl font-bold mb-2">8-15</div>
+                <div className="text-2xl font-bold mb-2">8-10</div>
                 <div className="text-sm text-muted-foreground">Signals per system</div>
               </div>
               <div className="p-4 border border-subtle rounded-lg">
-                <div className="text-2xl font-bold mb-2">5-8</div>
+                <div className="text-2xl font-bold mb-2">1-6</div>
                 <div className="text-sm text-muted-foreground">Failure modes tracked</div>
               </div>
               <div className="p-4 border border-subtle rounded-lg">
