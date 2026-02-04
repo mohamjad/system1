@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { System } from '@/types';
+import { System, LearningSuggestion } from '@/types';
 import { SignalStatusBadge } from '@/components/SignalStatusBadge';
 import { SystemCard } from '@/components/SystemCard';
 import { ReportIssue } from '@/components/ReportIssue';
@@ -91,7 +91,7 @@ export function SystemsDashboard({ systems }: SystemsDashboardProps) {
 
   // Aggregate learning suggestions from all incidents
   const allLearningSuggestions = useMemo(() => {
-    const suggestions: Array<{ suggestion: any; systemId: string; systemName: string; incidentId: string }> = [];
+    const suggestions: Array<{ suggestion: LearningSuggestion; systemId: string; systemName: string; incidentId: string }> = [];
     
     systems.forEach(system => {
       (system.incidents || []).forEach(incident => {
@@ -820,7 +820,7 @@ export function SystemsDashboard({ systems }: SystemsDashboardProps) {
           <h2 className="text-lg font-semibold mb-4">Learning Suggestions</h2>
           <div className="space-y-3">
             {allLearningSuggestions.map((item, idx) => {
-              const typeLabels = {
+              const typeLabels: Record<LearningSuggestion['type'], string> = {
                 new_signal: 'New Signal',
                 threshold_update: 'Threshold Update',
                 new_stress_test: 'New Stress Test'
