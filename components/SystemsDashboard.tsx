@@ -373,14 +373,6 @@ export function SystemsDashboard({ systems }: SystemsDashboardProps) {
                 medium: 'Medium',
                 low: 'Low',
               };
-              const typeIcons = {
-                critical_signal: '⚠️',
-                coverage_gap: '📊',
-                failed_test: '🧪',
-                recommendation: '💡',
-                incident: '📋',
-              };
-
               return (
                 <Link
                   key={idx}
@@ -388,7 +380,6 @@ export function SystemsDashboard({ systems }: SystemsDashboardProps) {
                   className={`p-3 border rounded-lg hover:opacity-80 transition-opacity ${priorityColors[alert.priority]}`}
                 >
                   <div className="flex items-start gap-2">
-                    <span className="text-lg">{typeIcons[alert.type]}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-medium text-sm">{alert.title}</span>

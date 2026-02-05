@@ -2,72 +2,90 @@
 
 import Link from 'next/link';
 import { System } from '@/types';
+import { getTopContributingSignals } from '@/lib/scoring';
+import { getSignalStatus } from '@/lib/scoring';
 
 interface SystemCardProps {
   system: System;
 }
 
-export function SystemCard({ system }: SystemCardProps) {
-  const riskColor = {
-    low: 'risk-low',
-    medium: 'risk-medium',
-    high: 'risk-high'
-  }[system.riskLevel];
+function getPrimaryDriver(system: System): string {
+  const topSignals = getTopContributingSignals(system.signals, 1);
+  if (topSignals.length === 0 || topSignals[0].contribution === 0) {
+    return 'All signals within normal ranges';
+  }
+  
+  const signal = system.signals.find(s => s.id === topSignals[0].signalId);
+  if (!signal) return 'No active issues';
+  
+  // Convert signal name to plain language
+  return signal.name;
+}
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const hoursAgo = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (hoursAgo < 1) return 'Just now';
-    if (hoursAgo < 24) return `${hoursAgo}h ago`;
-    return `${Math.floor(hoursAgo / 24)}d ago`;
-  };
+function getInterpretation(system: System, primaryDriver: string): string {
+  const topSignals = getTopContributingSignals(system.signals, 1);
+  if (topSignals.length === 0 || topSignals[0].contribution === 0) {
+    return 'System is operating normally';
+  }
+  
+  const signal = system.signals.find(s => s.id === topSignals[0].signalId);
+  if (!signal) return 'No significant issues detected';
+  
+  const status = getSignalStatus(signal);
+  const healthScore = system.healthScore;
+  
+  if (healthScore < 50) {
+    return 'Critical issues detected. Immediate attention required.';
+  } else if (healthScore < 70) {
+    if (status === 'triggered') {
+      return 'Quality is degrading before eval failures appear';
+    }
+    return 'Performance trending downward. Monitor closely.';
+  } else if (healthScore < 85) {
+    return 'Minor deviations detected. System stable but watch for trends.';
+  } else {
+    return 'System operating within expected parameters';
+  }
+}
+
+export function SystemCard({ system }: SystemCardProps) {
+  const primaryDriver = getPrimaryDriver(system);
+  const interpretation = getInterpretation(system, primaryDriver);
+  
+  const healthColor = system.healthScore >= 70 
+    ? 'text-green-600' 
+    : system.healthScore >= 50 
+    ? 'text-yellow-600' 
+    : 'text-red-600';
 
   return (
     <Link href={`/systems/${system.id}`}>
       <div className="border border-subtle rounded-lg p-6 hover-subtle transition-colors cursor-pointer">
         <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-lg font-semibold mb-1">{system.name}</h3>
-            <p className="text-sm text-muted-foreground">{system.description}</p>
-          </div>
-          <div className="text-right">
-            <div className={`text-2xl font-bold ${riskColor}`}>
+          <div className="flex-1">
+            <h3 className="text-xl font-semibold mb-3">{system.name}</h3>
+            <div className={`text-4xl font-bold mb-4 ${healthColor}`}>
               {Math.round(system.healthScore)}
             </div>
-            <div className="text-xs text-muted-foreground">System Health</div>
           </div>
         </div>
         
-        <div className="flex items-center gap-4 text-sm mb-4">
+        <div className="space-y-3 mb-4">
           <div>
-            <span className="text-muted-foreground">Risk: </span>
-            <span className={`font-medium capitalize ${riskColor}`}>
-              {system.riskLevel}
-            </span>
+            <div className="text-xs text-muted-foreground mb-1">Primary issue</div>
+            <div className="text-sm font-medium">{primaryDriver}</div>
           </div>
           <div>
-            <span className="text-muted-foreground">Updated: </span>
-            <span>{formatDate(system.lastEvaluation)}</span>
+            <div className="text-xs text-muted-foreground mb-1">What this means</div>
+            <div className="text-sm text-muted-foreground">{interpretation}</div>
           </div>
         </div>
         
-        {system.topRisks.length > 0 && (
-          <div className="pt-4 border-t border-subtle">
-            <div className="text-xs text-muted-foreground mb-2">Top Risks</div>
-            <div className="flex flex-wrap gap-2">
-              {system.topRisks.slice(0, 2).map((risk, idx) => (
-                <span
-                  key={idx}
-                  className="px-2 py-1 text-xs border border-subtle rounded"
-                >
-                  {risk}
-                </span>
-              ))}
-            </div>
+        <div className="pt-4 border-t border-subtle">
+          <div className="text-sm font-medium text-muted-foreground">
+            View system →
           </div>
-        )}
+        </div>
       </div>
     </Link>
   );
