@@ -2,60 +2,9 @@
 
 A framework that evaluates whether systems are actually healthy using leading indicators and a failure learning loop. Instead of waiting for alerts after something breaks, you define signals that fire *before* things break.
 
-## 🎯 Overview
+simple frontend demo i made for a startup's evaluation system before they ran out of money 
 
-This framework helps you:
-- **Define leading indicators** that catch problems early
-- **Get health scores** with clear explanations
-- **Learn from incidents** to improve detection over time
-- **Stress test** your monitoring before real failures occur
 
-## 🚀 Quick Start
-
-### Local Development
-
-```bash
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see the app.
-
-### Deploy to Vercel
-
-1. Push to GitHub
-2. Import the repository in Vercel
-3. Vercel auto-detects Next.js and deploys
-
-No configuration needed - Vercel handles everything automatically.
-
-## 📖 Documentation
-
-### Core Concepts
-
-#### Signals (Leading Indicators)
-
-Signals are measurable things that catch problems early. Each signal has:
-- **Name**: What you're measuring (e.g., "Refund Rate", "Task Completion Rate")
-- **Category**: Data quality, pipeline reliability, business impact, user sentiment, or behavior drift
-- **Current Value**: What it is now
-- **Baseline Value**: What's normal
-- **Threshold Rule**: When to alert
-- **Why This Matters**: Human-readable explanation
-- **Failure Mode Tags**: Which problems this signal catches
-
-**Example Signal:**
-```typescript
-{
-  name: 'Task Completion Rate',
-  category: 'business_impact',
-  currentValue: 0.68,
-  baselineValue: 0.72,
-  thresholdRule: 'Alert if drops > 10%',
-  whyThisMatters: 'Completion rate drops indicate training degradation',
-  failureModeTags: ['training_regression']
-}
-```
 
 #### Failure Modes
 
@@ -94,7 +43,7 @@ When an incident occurs:
    - New stress tests
 4. Apply suggestions to improve detection
 
-## 🏗️ Architecture
+##  Architecture
 
 ### Project Structure
 
@@ -134,7 +83,7 @@ system1/
 - **`lib/storage.ts`**: Handles LocalStorage persistence
 - **`lib/demo-data.ts`**: Pre-seeded demo systems
 
-## 📊 Demo Systems
+## Demo Systems
 
 The app comes with 3 pre-configured systems:
 
@@ -148,7 +97,7 @@ Each system includes:
 - 1-4 incidents showing learning opportunities
 - 1-4 stress tests
 
-## 🎨 Design System
+##  Design System
 
 The app uses a **Linear-style** design:
 - Clean borders (no shadows)
@@ -157,7 +106,7 @@ The app uses a **Linear-style** design:
 - Single sans-serif font
 - Strong hierarchy through size and weight
 
-## 💾 Data Persistence
+##  Data Persistence
 
 All data is stored in **LocalStorage**:
 - Systems persist across sessions
@@ -170,7 +119,7 @@ All data is stored in **LocalStorage**:
 - **Import**: Load configurations from JSON files
 - **Reset**: Restore demo systems
 
-## 🔧 Customization
+##  Customization
 
 ### Adding a New System
 
@@ -204,7 +153,7 @@ In the Signals tab:
 4. Review suggestions
 5. Click "Apply" on individual suggestions or "Apply All"
 
-## 📈 Scoring Algorithm
+##  Scoring Algorithm
 
 ### Signal Risk Calculation
 
@@ -230,7 +179,7 @@ In the Signals tab:
 - `Health = 100 - Risk Score`
 - Clamped to 0-100
 
-## 🧪 Stress Testing
+## Stress Testing
 
 Stress tests simulate failures to verify signals catch them:
 - **Schema Change**: Test data quality signals
@@ -243,7 +192,7 @@ Each test shows:
 - Pass/fail status
 - Notes on what happened
 
-## 🚨 Failure Modes
+## Failure Modes
 
 Failure modes define what can go wrong:
 
@@ -253,7 +202,7 @@ Failure modes define what can go wrong:
 - **Primary Signals**: Which signals detect it
 - **Mitigation Playbook**: Step-by-step response
 
-## 📝 Best Practices
+##  Best Practices
 
 ### Signal Design
 
@@ -305,18 +254,9 @@ npm run build
 npm start
 ```
 
-## 📄 License
+## License
 
 This project is open source and available for use.
-
-## 🤝 Contributing
-
-This is a demonstration framework. Feel free to fork and customize for your needs.
-
-## 📚 Additional Resources
-
-- **Scoring Engine**: See `lib/scoring.ts` for detailed algorithm
-- **Learning Loop**: See `lib/learning-loop.ts` for suggestion generation
 - **Demo Data**: See `lib/demo-data.ts` for example systems
 
 ---
